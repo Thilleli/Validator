@@ -1,11 +1,13 @@
 <?php
 //include_once ('../function.php');
 include_once $_SERVER['DOCUMENT_ROOT']. 'function.php';
+
+include_once $_SERVER['DOCUMENT_ROOT']. '/class/logs/logs.php';
 /**
 /**
- * Check du formulaire d'inscription
- * @param : nom, prenom, email, telephon, login, mot de passe
- * @return : Message d'erreur si l'url n'est pas saisie correctement
+ * Check du formulaire de connexion
+ * @param : login mdp
+ * @return : connexion ou non 
  */
 class FormConnexion{
 
@@ -52,7 +54,13 @@ class FormConnexion{
 					
 					}
 					$ConnexionOk=TRUE;
+					$Logs = New Logs('à été connecté ');
+					$Logs->SaveLogs();
 
+				}
+				else{
+					$Logs = New Logs('n\'a pas renseigné les bonnes informations pour se connecter');
+					$Logs->SaveLogs();
 				}
 				//afficher les resultat en json
 			      $tab["ConnexionOk"]=$ConnexionOk;
@@ -62,6 +70,8 @@ class FormConnexion{
 			else{
 				$message=TRUE;
 				$tab["errorMessage"]=$message;
+				$Logs = New Logs('n\'a pas remplies l\'intégralité du formulaire de connexion ');
+				$Logs->SaveLogs();
 				
 			}
 			
