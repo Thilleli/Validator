@@ -105,8 +105,13 @@ function FormValidator(){
 	<h2>Valide ton site</h2>
 	<label>Entrez l\'url de votre site :</label>
     <input type="text" placeholder="https://example.com" name="url" id="url" required/> 
+	<br>
+	<div style="text-align : center;">
+    <input  type="checkbox" id="warning" name="warning">   <label for="warning" style="font-size : 12px;">  Afficher les avertissements du code CSS</label>
+    <br>
      <input type="hidden" name="formtype" value="validator" /> 
-     <input type="submit" value="Valider" id="ButtonValid"/>
+     <input  type="submit" value="Valider" id="ButtonValid"/>
+     </div>
 	</form>';
 
 	return $form;
@@ -247,12 +252,12 @@ function LoginExist($login){
 
 
 // function qui insère les données du user dans la bdd
-function InsertUser($nom,$prenom,$email,$tel,$login,$password){
+function InsertUser($nom,$prenom,$email,$tel,$login,$password,$key){
 	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
 	$conn = $ConnexionBDD->OpenCon();
 	// Verifie que le login n'existe pas 
-	$request =  ("INSERT INTO `user`(id_user,nom_user,prenom_user,mail_user,tel_user,login_user,mdp_user)
-              VALUES (NULL,'$nom', '$prenom','$email' ,'$tel','$login','$password')");
+	$request =  ("INSERT INTO `user`(id_user,nom_user,prenom_user,mail_user,tel_user,login_user,mdp_user,key_chiffrement)
+              VALUES (NULL,'$nom', '$prenom','$email' ,'$tel','$login','$password','$key')");
 	$verification = $ConnexionBDD->getResults($conn,$request);
 	if($verification){
 		return TRUE;
@@ -272,6 +277,15 @@ function verifUser($login,$password){
 		}
 	}
 
+}
+//fonction qui genere une clé aleatoire
+function random_key($length=20){
+  $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $string = '';
+  for($i=0; $i<$length; $i++){
+      $string .= $chars[rand(0, strlen($chars)-1)];
+  }
+  return $string;
 }
 
 
