@@ -14,7 +14,11 @@ if(!empty($_POST)){
 		$login =  htmlspecialchars(strip_tags($_POST['login']));
 		$password = $_POST['password'];
 
-			$Inscription = new FormInscription($nom,$prenom,$mail, $tel,$login, $password);
+		//chiffrer le mot de passe en utilisant une clé aléatoire
+    	$key_chiffrement=random_key($length=20);
+    	$pwdhash=hash("sha512", $password.$key_chiffrement);
+
+			$Inscription = new FormInscription($nom,$prenom,$mail, $tel,$login, $pwdhash,$key_chiffrement);
 			$check = $Inscription->CheckForm();
 			
 			if ($check){

@@ -45,7 +45,7 @@ $ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_da
 			
 				<div class="col-md-6">
 					<label for="password"> Mot de passe : </label>
-					<input type="password" name="password" id="password" class="form-control" placeholder="6 caratère minimum">
+					<input type="password" name="password" id="password" class="form-control" minlength="6" placeholder="6 caratère minimum">
 				</div>
 			</div>
             <div class="mb-3 text-center">
