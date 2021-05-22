@@ -75,6 +75,13 @@ echo Footer();
                                     </div>
                                 `);
                             }
+                            if(!data.check.UserValidated){
+                                $('.Messages').append(`
+                                    <div class="alert alert-danger text-center mt-4" role="alert">
+                                        Votre compte n'a pas encore été validé! Vous devez cliquer sur le liens envoyé à votre adresse mail.
+                                    </div>
+                                `);
+                            }
                             
                             if(data.check.ConnexionOk){
 

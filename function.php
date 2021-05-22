@@ -5,6 +5,61 @@
   $parse = parse_url($url);
   echo $parse['host']; 
 */
+  //Inclure la classe PHPMailer
+// On va chercher la classe PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+function smtpmailer($to, $nom, $prenom, $key)
+{
+	$mail = new PHPMailer;
+	$mail->CharSet = 'UTF-8';
+
+	$mail->isSMTP();					// Active l'envoi via SMTP
+	$mail->Host = 'smtp.gmail.com';			// Nom du serveur sur lequel vos emails sont hébergés
+	$mail->SMTPAuth = true;					// Active l'authentification par SMTP
+	$mail->Username = 'noreplysvalidator@gmail.com';			// Nom d'utilisateur SMTP (votre adresse email complète)
+	$mail->Password = 'Wasef01*';			// Mot de passe de l'adresse email indiquée précédemment
+	$mail->Port = 465;					// Port SMTP
+	$mail->SMTPSecure = "ssl";				// Utiliser SSL
+	$mail->isHTML(true);					// Format de l'email en HTML
+
+	//Voici ensuite les paramètres liés au mail :
+
+	$mail->From = 'noreplysvalidator@gmail.com';			// L'adresse mail de l'emetteur du mail (en général identique à l'adresse utilisée pour l'authentification SMTP)
+	$mail->FromName = 'Validator';				// Le nom de l'emetteur qui s'affichera dans le mail
+	$mail->addAddress($to);			// Un premier destinataire
+	//$mail->addAddress('ellen@example.com');			// Un second destifataire (facultatif)
+								// Possibilité de répliquer la ligne pour plus de destinataires
+	//$mail->addReplyTo('contact@azertyfrance.fr');			// Pour ajouter l'adresse à laquelle répondre (en général celle de la personne ayant rempli le formulaire)
+	//$mail->addCC('cc@example.com');				// Pour ajouter un champ Cc
+	//$mail->addBCC('bcc@example.com');			// Pour ajouter un champ Cci
+	$heure = date('H')+1;
+	$date = date('Y-m-d|'.$heure.':i:s');
+	$sujet = 'Bienvenue sur Validator';
+	$body = 'Bonjour '.$nom.' '.$prenom.', <br> Nous sommes heureux de te voir parmi nous! Pour commencer tu dois confirmer ton compte. Cliques juste sur le lien&nbsp;ci-dessous. Attention ! ce lien expire le '.$date.'<br>
+	Lien : https://validator.alwaysdata.net/validecompte.php?key='.$key.'&date='.$date;'<br>
+	Si tu as des questions, reponds juste à ce mail—On sera heureux de te répondre.<br>
+	A très bientôt,<br>
+	L\'équipe Validator.';
+
+	$mail->Subject = $sujet;			// Le sujet de l'email
+	$mail->Body    = $body;		// Le contenu du mail en HTML
+	$mail->AltBody = $body;	// Le contenu du mail au format texte
+	if(!$mail->Send())
+	{
+		$error ="Erreur...";
+		return $error;
+	}
+	else
+	{
+		$error = "Merci. Votre message a été bien envoyé.";
+		return $error;
+	}
+}
 function getTabUrl($url){
   $parse = parse_url($url); 
 	$taburl = [];
@@ -69,25 +124,41 @@ function NoError($error)
 function Nav($title){
 	$header='
 	<!DOCTYPE html>
+	
 	<html lang="fr">
 	<head>
 		<title>'.$title.'</title>
 		<meta charset="utf-8">
-	  <link rel="stylesheet" type="text/css" href="/style/style.css">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  	<link rel="stylesheet" type="text/css" href="style/style.css">
+	  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	</head>
 	<body>
 	<h1>Validator</h1>
 
-	<ul>
-	  <li><a href="index.php">Accueil</a></li>
-	  <li><a href="#propos">À propos</a></li>
-	  <li><a href="#contact">Contact</a></li>
-	  <li style="float:right"><a href="connexion.php">Connexion</a></li>
-	  <li style="float:right"><a href="inscription.php">Inscription</a></li>
-	</ul><div id="bodyofbody">';
+	
+	';
+	if (!empty($_SESSION['id_user'])) {
+		$header.= '<ul>
+		<li><a href="index.php">Accueil</a></li>
+		<li><a href="pageProfile.php">Profil</a></li>
+		<li><a href="Apropos.php">À propos</a></li>
+		<li style="float:right"><a href="deconnexion.php">Déconnexion</a></li>
+		<li style="float:right"><a href="delet_user.php">Me désinscrire</a></li>
+		</ul><div id="bodyofbody">';
+	}
+	else{
+		$header.=  '<ul>
+			<li><a href="index.php">Accueil</a></li>
+			<li><a href="Apropos.php">À propos</a></li>
+			<li><a href="#contact">Contact</a></li>
+			<li style="float:right"><a href="connexion.php">Connexion</a></li>
+			<li style="float:right"><a href="inscription.php">Inscription</a></li>
+		</ul><div id="bodyofbody">';
+	}
+	
 	return $header;
 }
 function Footer(){
@@ -116,49 +187,7 @@ function FormValidator(){
 
 	return $form;
 }
-/*function NavBootstrap($title){
-	$header='
-	<!DOCTYPE html>
-	<html lang="fr">
-	<head>
-		<title>'.$title.'</title>
-		<meta charset="utf-8">
-	  <link rel="stylesheet" type="text/css" href="/style/style.css">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<style>
-  		.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited 
-  		{
-   			 background-color: #8064A2 !important;
-   		}
-   		.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited 
-  		{
-   			 border-color: green !important;
-   		}
-
-    	 .btn-primary:active 
-    	{
-   		 	 background-color: yellow !important;
-		}
-		ul, li, a {
-			list-style: none;
-		}
-	</style>
-	</head>
-	<body>
-	<h1>Validator</h1>
-
-	<ul>
-	  <li><a href="index.php">Accueil</a></li>
-	  <li><a href="#propos">À propos</a></li>
-	  <li><a href="#contact">Contact</a></li>
-	  <li style="float:right"><a href="connexion.php">Connexion</a></li>
-	  <li style="float:right"><a href="inscription.php">Inscription</a></li>
-	</ul><div id="bodyofbody">';
-	return $header;
-}*/
 function FormInscription(){
 	$form = '<form action="inscription.php" method="post" >
 		<div class="container ">
@@ -278,6 +307,7 @@ function verifUser($login,$password){
 	}
 
 }
+
 //fonction qui genere une clé aleatoire
 function random_key($length=20){
   $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -288,5 +318,98 @@ function random_key($length=20){
   return $string;
 }
 
+function verifkey($key){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	 
+	$request =  ("SELECT count(*) FROM user WHERE key_chiffrement='$key'");
+	$verification = $ConnexionBDD->getResults($conn,$request);
+	while ($row = $verification -> fetch_array(MYSQLI_NUM)) {
+		if($row[0] == 1){
+			return True;
+		}
+	}
+}
+function CompteReady($key){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	 
+	$request =  ("UPDATE user SET compte_valide = 1 WHERE key_chiffrement='$key'");
+	$verification = $ConnexionBDD->getResults($conn,$request);
+	if($verification){
+		return True;
+	}
+}
+function DeleteCompte($key){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	 
+	$request =  ("DELETE FROM user WHERE key_chiffrement='$key'");
+	$verification = $ConnexionBDD->getResults($conn,$request);
+	if($verification){
+		return True;
+	}
+}
+function DeleteUser($session){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	 
+	$request=("DELETE FROM user WHERE id_user='$session'");
+	$verification = $ConnexionBDD->getResults($conn,$request);
+	if($verification){
+		return True;
+	}
+}
+function user_validated($login,$password){
 
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	 
+	$request=("SELECT compte_valide FROM user WHERE login_user='$login' AND mdp_user='$password'");
+	$result = $ConnexionBDD->getResults($conn,$request);
+	while ($row = $result -> fetch_array(MYSQLI_NUM)) {
+		if($row[0]==1){
+			return True;
+		}
+	}
+}
+function Historique($id_user,$url,$date){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	// Verifie que le login n'existe pas 
+	$request =  ("INSERT INTO `historique`(id_historique,id_user,lien,`date`)
+              VALUES (NULL,'$id_user','$url','$date')");
+	$insert = $ConnexionBDD->getResults($conn,$request);
+	if($insert){
+		return TRUE;
+	}
+}
+function SeeHistorique($id_user){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	// Verifie que le mail entre n'existe pas dans la base de données 
+	$request_mail = ("SELECT date,lien FROM historique WHERE id_user='$id_user'");
+	$verification_mail = $ConnexionBDD->getResults($conn,$request_mail);
+	while ($row = $verification_mail -> fetch_array(MYSQLI_NUM)) {
+		 for ($i=0; $i <sizeof($row) ; $i++) { 
+		 	if ($i%2) {
+		 		echo $row[$i].'	 <br><br>';
+		 	}
+		 	else{
+		 		echo '<code>'.$row[$i].'</code> &nbsp;&nbsp;&nbsp;&nbsp;';
+		 	}
+			
+		}
+	}
+}
+function DeleteHistorique($id_user){
+	$ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_data','validator','wasef01*');
+	$conn = $ConnexionBDD->OpenCon();
+	// Verifie que le login n'existe pas 
+	$request =  ("DELETE FROM `historique` WHERE id_user='$id_user'");
+	$delete = $ConnexionBDD->getResults($conn,$request);
+	if($delete){
+		return TRUE;
+	}
+}
 ?>

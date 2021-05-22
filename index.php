@@ -8,6 +8,7 @@
 	include_once 'function.php';
 	include_once './class/validator/formvalidator.php';
 	include_once './class/logs/logs.php';
+	include_once './class/bdd/connexionbdd.php';
 
  //----------------------------------------------------------------------------------------------
 	echo Nav('Validator'); //Menu de navigation
@@ -16,6 +17,7 @@
 	$FormValidator = New FormValidator($_POST["formtype"],$_POST["url"],$_POST["warning"]);// Appel de la class
 	$url = $FormValidator->GetUrl();//utilisation de ces fonctions
 	$FormCheck = $FormValidator->CehckForm();//utilisation de ces fonctions
+	$date = date('Y-m-d H:i:s');
 	}
 	if($FormCheck != 'TRUE'){
 		if (!empty($FormCheck)) {
@@ -25,7 +27,11 @@
 		}
 		
 	}
-	else{//si non l'API corrige les pages
+	else{
+		if (!empty($_SESSION['id_user'])) {
+			Historique($_SESSION['id_user'],$url,$date);
+		}
+	//si non l'API corrige les pages
 		//$url = 'http://mygame.alwaysdata.net/';
 		$Taburl = getTabUrl($url);
 		//var_dump($Taburl);
@@ -41,7 +47,7 @@
 		//---------------------------------------------------------------------------------------------------CSS--------------------------------------------------------------------------------------------
 			$UrlValid = $URLS->ValideURL();
 			if ($UrlValid) {
-				$Logs = New Logs('à fait vérifier les erreurs CSS de la page '.$URLS->GetURL() );
+				$Logs = New Logs('a fait vérifier les erreurs CSS de la page '.$URLS->GetURL() );
 				$Logs->SaveLogs();
 				echo "<h2><b>La page à corriger : </b>". $URLS->GetURL()."</h2>";
 				if ($x == 0) {//CSS Verfier seulement sur la premier page pour plus de performance
@@ -69,7 +75,7 @@
 						}
 						if ($FormValidator->CheckWarningCSS()) {
 							for ($i=0; $i <$warningcount; $i++) {
-								$Logs = New Logs('à fait vérifier les avertissement CSS de la page '.$URLS->GetURL() );
+								$Logs = New Logs('a fait vérifier les avertissement CSS de la page '.$URLS->GetURL() );
 								$Logs->SaveLogs();
 
 								$line = CheckValue($data["cssvalidation"]["warnings"][$i]['line']);
@@ -86,7 +92,7 @@
 			   	//Recupere l'API  du site W3C en JSON  // j'ai mis mon site http://yourgame.alwaysdata.net-
 					//echo "<h3>Dans le code HTML :</h3>";
 					$APIHTML = $URLS->GetURLValidatorHTML();
-					$Logs = New Logs('à fait vérifier les erreurs HTML de la page '.$URLS->GetURL() );
+					$Logs = New Logs('a fait vérifier les erreurs HTML de la page '.$URLS->GetURL() );
 					$Logs->SaveLogs();
 					$options = array(
 					  'http'=>array(
@@ -121,10 +127,21 @@
 							echo '<div class = "containerred">'.$ErrorHTML.'</div>';
 						}
 					}
+			
 			}
 
 		}
+		echo '<form>
+				  <center><input id="impression" name="impression" class="btn btn-primary" type="button" onclick="imprimer_page()" value="Imprimer cette page" /></center>
+				</form>';
 	}
+	?>
+	<script>
+	function imprimer_page(){
+	  window.print();
+	}
+</script>
+	<?php 
 	echo Footer();
 
 

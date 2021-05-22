@@ -33,7 +33,7 @@ $ConnexionBDD = New ConnexionBDD ('mysql-validator.alwaysdata.net','validator_da
 			
 				<div class="col-md-6">
 					<label for="tel"> Télephone : </label>
-					<input type="tel" name="tel" id="tel" class="form-control" placeholder="06 23 56 84 12 (optionel)" >
+					<input type="tel" name="tel" id="tel" class="form-control" placeholder="06 23 56 84 12" >
 				</div>
 			</div>
 
@@ -94,7 +94,7 @@ echo Footer();
                             
                             $('.Messages').append(`
                                 <div class="alert alert-danger text-center mt-4" role="alert">
-                                    Veuillez remplir les champs obligatoire!
+                                    Veuillez remplir tous les champs!
                                 </div>
                             `);
                         }else{
@@ -116,7 +116,7 @@ echo Footer();
                             if(data.check.inscriptionOk){
                                 $('.Messages').append(`
                                     <div class="alert alert-success text-center mt-4" role="alert">
-                                       	Vous êtes bien inscris! Rendez-vous <a href="formconnexion.php">ici</a> pour accéder à votre compte
+                                       	Un mail vous à été envoyé pour confirmez votre vompte. Merci de cliquer sur le lien envoyer.
                                     </div>
                                 `);
                                 $('#formInscription')[0].reset();
