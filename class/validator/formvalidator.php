@@ -9,9 +9,11 @@ include_once './class/validator/url.php';
 class FormValidator extends URLS{
 
 	private $formtype;
+	private $warning;
 
-	public function __construct(string $formtype, string $url){	
+	public function __construct(string $formtype, string $url, $warning){	
 		$this->formtype = $formtype;
+		$this->warning = $warning;
 		parent::__construct($url);
 
 	}
@@ -42,6 +44,11 @@ class FormValidator extends URLS{
 			
 		}
 	}
+	public function CheckWarningCSS(){
+			if (!empty($this->warning)) {
+				return True;
+			}
+	}
 	public function GetFormType(){
 			return $this->formtype;
 	}
@@ -51,6 +58,7 @@ class FormValidator extends URLS{
         $out  = "<------------------Message Du Formulaire-----------------><br>";
         $out .= parent::__toString();
         $out .= "<p> Type de Formulaire : ". $this->formtype ."</p>";
+        $out .= "<p> Warning on/off : ". $this->warning ."</p>";
         return $out;
     }
 

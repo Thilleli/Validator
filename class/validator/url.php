@@ -10,7 +10,7 @@ class URLS{
 
 	private $url;
 
-	public function __construct(string $url){
+	public function __construct( $url){
 
 		$this->url = $url;
 
@@ -33,7 +33,13 @@ class URLS{
 			if (!preg_match("/#/", $url)) {
 				if (!preg_match("/@/", $url))
 					{
-						return True;
+						if (!preg_match("/.css/", $url))
+						{
+							return True;
+						}
+						else{
+							return False;
+						}
 					}
 				else{
 						return False;
