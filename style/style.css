@@ -2,6 +2,48 @@
 	margin-left: 95px;
 	margin-right: 70px;
 }
+.card{
+	display: inline-block;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	width: 30%; 
+	margin-top: 15px;
+	border-radius: 5px;
+	margin-bottom: 50px;
+	margin-left: 200px;  
+	background-color: #F2F0FD;
+	text-align: justify;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	margin-top: 6%;
+
+}
+.card img{
+	margin-top: 5%;
+	margin-bottom: 7%;
+	height: 150px;
+
+}
+.card h4{
+	 text-align: center;
+}
+.card p{
+	 padding-left: 65px;
+}
+.card #delete{
+	padding-left: 20px;
+	padding-right: 20px;
+	text-align: center;
+}
+.card form {
+	padding-top: 20px;
+	 text-align: center;
+}
+.table{
+	text-align: right;
+	margin-left: 300px;
+}
+
 .containerred {
 
 	background-color: #FACACE;
@@ -127,6 +169,7 @@ footer{
 
 height:50px;
 font-weight: bold;
+/*position:absolute;*/
 
 }
 #url{
