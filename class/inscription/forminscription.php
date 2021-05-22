@@ -62,6 +62,7 @@ class FormInscription{
       			$MailExist=MailExist($this->mail);
 				 //-----------------------------------------------------------
 				if ((!$MailExist AND !$LoginExist)) {
+					smtpmailer($this->mail, $this->nom, $this->prenom,$this->key_chiffrement);
 					InsertUser($this->nom,$this->prenom,$this->mail,$this->tel,$this->login,$this->password,$this->key_chiffrement);
 					$inscriptionOk=TRUE;
 					$Logs = New Logs('à été inscrit ');
