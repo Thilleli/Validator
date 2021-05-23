@@ -145,6 +145,7 @@ function Nav($title){
 		<li><a href="index.php">Accueil</a></li>
 		<li><a href="pageProfile.php">Profil</a></li>
 		<li><a href="Apropos.php">À propos</a></li>
+		<li><a href="contact.php">Contact</a></li>
 		<li style="float:right"><a href="deconnexion.php">Déconnexion</a></li>
 		<li style="float:right"><a href="delet_user.php">Me désinscrire</a></li>
 		</ul><div id="bodyofbody">';
@@ -153,7 +154,7 @@ function Nav($title){
 		$header.=  '<ul>
 			<li><a href="index.php">Accueil</a></li>
 			<li><a href="Apropos.php">À propos</a></li>
-			<li><a href="#contact">Contact</a></li>
+			<li><a href="contact.php">Contact</a></li>
 			<li style="float:right"><a href="connexion.php">Connexion</a></li>
 			<li style="float:right"><a href="inscription.php">Inscription</a></li>
 		</ul><div id="bodyofbody">';
@@ -162,12 +163,16 @@ function Nav($title){
 	return $header;
 }
 function Footer(){
+
 	$footer='</div>
-	<footer><p>© 2021 - WASEF Alexandra & BELHOCINE Thilleli</p></footer>
-	
-	</body>
-	</html>
-	';
+	<footer class="page-footer font-small blue pt-4">
+		  <!-- Copyright -->
+		  <div class="footer-copyright text-center py-3">© 2021 Copyright:
+		    <a href="http://validator.alwaysdata.net/">WASEF Alexandra & BELHOCINE Thilleli-validator.alwaysdata.net</a>
+		  </div>
+		  <!-- Copyright -->
+
+	</footer>';
 	return $footer;
 }
 
